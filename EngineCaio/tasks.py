@@ -6,7 +6,7 @@ import seaborn as sns
 import os
 from datetime import datetime
 
-FILENAME = "COVID-19_US_County-level_Summaries-master\\COVID-19_US_County-level_Summaries-master\\data\\infections_timeseries.csv"
+FILENAME = "infections_timeseries.csv"
 N_MONTHS = 3
 TOP_K = 5
 
