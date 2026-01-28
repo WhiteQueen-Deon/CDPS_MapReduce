@@ -165,7 +165,26 @@ class DistributedWorker:
 if __name__ == "__main__":
     import sys
     # Ex: python worker.py 6000
+    if len(sys.argv) < 3:
+        print("ERROR: Not enough arguments")
+        print("Correct usage: python worker.py <WORKER_PORT> <MASTER_IP>")
+        print("Exemple:     python worker.py 6000 192.168.1.50")
+        sys.exit(1)
     my_port = int(sys.argv[1])
-    # Assumes Master at localhost (127.0.0.1) port 5000
-    w = DistributedWorker('127.0.0.1', my_port, '127.0.0.1', 5000)
+    master_ip = sys.argv[2]
+    master_port = 5000
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        s.connect(("8.8.8.8", 80))
+        my_ip = s.getsockname()[0]
+    except Exception:
+        my_ip = '127.0.0.1'
+    finally:
+        s.close()
+
+    print(f"I'M WORKER: {my_ip}:{my_port}")
+    print(f"CONECTING TO MASTER: {master_ip}:{master_port}")
+    print("----------------------------------")
+
+    w = DistributedWorker(my_ip, my_port, master_ip, master_port)
     w.run()
