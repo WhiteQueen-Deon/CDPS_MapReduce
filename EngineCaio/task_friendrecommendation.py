@@ -20,6 +20,7 @@ def user_mapper(record):
     return [(user1, user2), (user2, user1)]
 
 
+
 def user_shuffler(mapped_data, num_workers):
     """
     Round 1 Shuffle: Partition by user ID
@@ -47,10 +48,13 @@ def user_reducer(received_data):
             continue
         
         # Generate all friend pairs
-        for friend1, friend2 in combinations(friends, 2):
-            results.append(((friend1, friend2), user))
-            results.append(((friend2, friend1), user))
+        # for friend1, friend2 in combinations(friends, 2):
+        #     results.append(((friend1, friend2), user))
+        #     results.append(((friend2, friend1), user))
     
+        for friend1, friend2 in combinations(friends, 2):
+            a, b = sorted([friend1, friend2])
+            results.append(((a, b), user))
     return results
 
 
@@ -77,3 +81,4 @@ if __name__ == "__main__":
         result_handler=user_result_handler
     )
     master.start()
+
